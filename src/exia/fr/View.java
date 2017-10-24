@@ -1,20 +1,18 @@
 package exia.fr;
 
+import javax.swing.JFrame;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 public class View extends JFrame {
@@ -30,16 +28,24 @@ public class View extends JFrame {
 	private final Action action_1 = new actionButtonMinus();
 	private final IController controller;
 	private ImagePanel AlertPanel;
+	private GraphThreadController graphThread;
+	private GraphTemperature graphTemperature;
+	private GraphHumidity graphHumidity;
 	// private DrawGraph graph;
 	// private List<BufferedImage> image = newArrayList<BufferedImage>();
 
 	public View(IController controller, double tempConsigne) {
 		this.controller = controller;
+
 		/*
-		 * try{ image.add(ImageIO.read(new File("image/"))); image.add(ImageIO.read(new
-		 * File("image/"))); image.add(ImageIO.read(new File("image/")));
-		 * image.add(ImageIO.read(new File("image/"))); }catch(IOException ex){ }
-		 */
+		try {
+			image.add(ImageIO.read(new File("image/")));
+			image.add(ImageIO.read(new File("image/")));
+			image.add(ImageIO.read(new File("image/")));
+			image.add(ImageIO.read(new File("image/")));
+		} catch (IOException ex) {
+		}*/
+
 		setTitle("Frigo GUI");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 613, 289);
@@ -80,10 +86,15 @@ public class View extends JFrame {
 		this.AlertPanel = new ImagePanel();
 		this.AlertPanel.paintComponents(AlertPanel.getGraphics());
 
-		/*
-		 * this.graph = new DrawGraph(null); SwingUtilities.invokeLater(new Runnable() {
-		 * public void run() { graph.createAndShowGui(); } });
-		 */
+		this.graphTemperature = new GraphTemperature("Temperature Graph");
+		this.graphTemperature.setVisible(true);
+		
+		this.graphHumidity = new GraphHumidity("Humidity Graph");
+		this.graphHumidity.setVisible(true);
+		
+		this.graphThread = new GraphThreadController(this.graphTemperature, this.graphHumidity);
+		Thread thread = new Thread(this.graphThread);
+		thread.start();
 
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane
@@ -143,18 +154,27 @@ public class View extends JFrame {
 		return labelConsigne;
 	}
 
-	public void setFieldTemperature(String temperature) {
-		this.fieldTemperature.setText(temperature + "\u00B0C");
+	public void setFieldTemperature(float temperature) {
+		this.fieldTemperature.setText(Float.toString(temperature) + "\u00B0C");
+		this.graphThread.setInTemp(temperature);
+		this.repaint();
+	}
+	
+	public void setFieldTemperatureExt(float temperature) {
+		//this.fieldTemperatureExt.setText(Float.toString(temperature) + "\u00B0C");
+		this.graphThread.setExtTemp(temperature);
 		this.repaint();
 	}
 
-	public void setFieldHumidity(String humidity) {
-		this.fieldHumidity.setText(humidity + "%");
+	public void setFieldHumidity(float humidity) {
+		this.fieldHumidity.setText(Float.toString(humidity) + "%");
+		this.graphThread.setHumidity(humidity);
 		this.repaint();
 	}
 
-	public void setLabelConsigne(String consigne) {
-		this.labelConsigne.setText(consigne + "\u00B0C");
+	public void setLabelConsigne(float consigne) {
+		this.labelConsigne.setText(Float.toString(consigne) + "\u00B0C");
+		this.graphThread.setConsigne(consigne);
 		this.repaint();
 	}
 

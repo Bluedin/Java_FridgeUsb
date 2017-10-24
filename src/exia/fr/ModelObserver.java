@@ -1,11 +1,11 @@
 package exia.fr;
 
 public interface ModelObserver {
-	void onTemperatureIntChanged(double value);
+	void onTemperatureIntChanged(float value);
 
-	void onHumidityChanged(double value);
+	void onHumidityChanged(float value);
 
-	void onTemperatureConsigneChanged(double value);
+	void onTemperatureConsigneChanged(float value);
 
 	void onAlertChange(int value);
 }

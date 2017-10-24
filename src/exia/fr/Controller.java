@@ -4,28 +4,30 @@ public class Controller implements IController, ModelObserver {
 
 	private View view;
 	private Model model;
+	private CAD cad;
 
 	public Controller() {
 		this.model = new Model();
 		model.addObserver(this);
+		this.cad = new CAD(this.model);
 
 		this.view = new View(this, 18);
 		this.view.setVisible(true);
 	}
 
 	@Override
-	public void onTemperatureIntChanged(double value) {
-		this.view.setFieldTemperature(Double.toString(value));
+	public void onTemperatureIntChanged(float value) {
+		this.view.setFieldTemperature(value);
 	}
 
 	@Override
-	public void onHumidityChanged(double value) {
-		this.view.setFieldHumidity(Double.toString(value));
+	public void onHumidityChanged(float value) {
+		this.view.setFieldHumidity(value);
 	}
 
 	@Override
-	public void onTemperatureConsigneChanged(double value) {
-		this.view.setLabelConsigne(Double.toString(value));
+	public void onTemperatureConsigneChanged(float value) {
+		this.view.setLabelConsigne(value);
 	}
 
 	@Override

@@ -23,7 +23,6 @@ public class Arduino implements SerialPortEventListener, ICAD {
 	
 	
 	public Arduino(Model model) {
-		this.start();
 		this.model = model;
 	}
 	
@@ -41,13 +40,19 @@ public class Arduino implements SerialPortEventListener, ICAD {
 			while(!input.ready());
 			
 			String inputLine = input.readLine();
-			String[] data = inputLine.split(";");
+			if(inputLine.matches("^Data.*")) {
+				String[] data = inputLine.split(";");
+				
+				
+				float temperatureInt = Float.parseFloat(data[1]);
+				float humidityInt = Float.parseFloat(data[2]);
+	
+				this.model.setTemperatureInt(temperatureInt);
+				this.model.setHumidityInt(humidityInt);
+			}else {
+				System.out.println(inputLine);
+			}
 			
-			double humidityInt = Double.parseDouble(data[1]);
-			double temperatureInt = Double.parseDouble(data[2]);
-
-			this.model.setTemperatureInt(temperatureInt);
-			this.model.setHumidityInt(humidityInt);
 
 			
 		} catch (Exception ex) {
@@ -58,14 +63,8 @@ public class Arduino implements SerialPortEventListener, ICAD {
 	
 	
 	
-	// Ecriture
-	
+	@Override
 	public void setConsigne(double value) {
-		try {
-			Thread.sleep(3000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 		try{
 			this.output = this.serialPort.getOutputStream();
 		} catch(IOException e) {System.out.println();}
@@ -76,8 +75,7 @@ public class Arduino implements SerialPortEventListener, ICAD {
 	 
 	 
 	 
-	 // Initialisation
-	 
+	 @Override
 	 public void start() {    
 			
 			// Récuperer tous les ports utilisés pour la liaison à la carte Arduino

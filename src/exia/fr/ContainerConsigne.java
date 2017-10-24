@@ -5,20 +5,24 @@ import java.util.List;
 
 public class ContainerConsigne implements ModelObserver{
 
-	public List<Double> list = new ArrayList<Double>();
+	public List<Float> list = new ArrayList<Float>();
+	
+	public ContainerConsigne(Model model) {
+		model.addObserver(this);
+	}
 	
 	@Override
-	public void onTemperatureIntChanged(double value) {
+	public void onTemperatureIntChanged(float value) {
 		
 	}
 
 	@Override
-	public void onHumidityChanged(double value) {
+	public void onHumidityChanged(float value) {
 		
 	}
 
 	@Override
-	public void onTemperatureConsigneChanged(double value) {
+	public void onTemperatureConsigneChanged(float value) {
 		this.list.add(value);
 		
 	}

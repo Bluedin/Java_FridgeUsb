@@ -15,63 +15,63 @@ public class Model {
 	/**
 	 * Température intérieure du réfrigérateur. En degrés celcius.
 	 */
-	private double temperatureInt = 0;
+	private float temperatureInt = 0;
 
 	/**
 	 * Humidité intérieure du réfrigérateur. En pourcentage d'humidité relative dans
 	 * l'air.
 	 */
-	private double humidityInt = 0;
+	private float humidityInt = 0;
 
 	/**
 	 * Température de consigne pour l'asservissement du réfrigérateur. En degrés
 	 * celcius.
 	 */
-	private double temperatureConsigne = 0;
+	private float temperatureConsigne = 18;
+	
+	
 
-	private Arduino arduino;
+	
 
-	// Getters et Setters
-
-	public double getTemperatureInt() {
+	public float getTemperatureInt() {
 		return temperatureInt;
 	}
 
-	public void setTemperatureInt(double temperatureInt) {
-		if (this.temperatureInt == temperatureInt)
-			return;
-		this.temperatureInt = temperatureInt;
-		notifyTemperatureIntChanged();
+	public void setTemperatureInt(float temperatureInt) {
+		if (this.temperatureInt != temperatureInt){
+			this.temperatureInt = temperatureInt;
+			notifyTemperatureIntChanged();
+		}
 	}
 
-	public double getHumidityInt() {
+	public float getHumidityInt() {
 		return humidityInt;
 	}
 
-	public void setHumidityInt(double humidityInt) {
-		if (this.humidityInt == humidityInt)
-			return;
-		this.humidityInt = humidityInt;
-		notifyHumidityIntChanged();
+	public void setHumidityInt(float humidityInt) {
+		if (this.humidityInt != humidityInt) {
+			this.humidityInt = humidityInt;
+			notifyHumidityIntChanged();
+		}
 	}
 
-	public double getTemperatureConsigne() {
+	public float getTemperatureConsigne() {
 		return temperatureConsigne;
 	}
 
-	public void setTemperatureConsigne(double temperatureConsigne) {
-		if (this.temperatureConsigne == temperatureConsigne)
-			return;
-		this.temperatureConsigne = temperatureConsigne;
-		notifyTemperatureConsigneChanged();
+	public void setTemperatureConsigne(float temperatureConsigne) {
+		if (this.temperatureConsigne != temperatureConsigne){
+			this.temperatureConsigne = temperatureConsigne;
+			notifyTemperatureConsigneChanged();
+		}
 	}
 
 	public void addTemperatureConsigne() {
-		this.setTemperatureConsigne(this.getTemperatureConsigne() + 0.5);
+		this.setTemperatureConsigne((float) (this.getTemperatureConsigne() + 0.5));
 	}
 
 	public void decreaseTemperatureConsigne() {
-		this.setTemperatureConsigne(this.getTemperatureConsigne() - 0.5);
+		this.setTemperatureConsigne((float) (this.getTemperatureConsigne() - 0.5));
 	}
 
 	public void addObserver(ModelObserver observer) {
