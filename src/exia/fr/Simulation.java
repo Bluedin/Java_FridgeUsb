@@ -14,7 +14,7 @@ public class Simulation implements Runnable{
 		this.model = model;
 		this.inTemperature = 25;
 		this.extTemperature = 25;
-		this.humidity = 50;
+		this.humidity = 70;
 		this.consigne = 18;
 		this.alert = 0;
 	}
