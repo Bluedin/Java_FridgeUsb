@@ -17,6 +17,11 @@ public class ContainerConsigne implements ModelObserver{
 	}
 
 	@Override
+	public void onTemperatureExtChanged(float value) {
+		
+	}
+
+	@Override
 	public void onHumidityChanged(float value) {
 		
 	}
@@ -28,7 +33,7 @@ public class ContainerConsigne implements ModelObserver{
 	}
 
 	@Override
-	public void onAlertChange(int value) {
+	public void onAlertChanged(int value) {
 		
 	}
 

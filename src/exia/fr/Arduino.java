@@ -45,9 +45,12 @@ public class Arduino implements SerialPortEventListener, ICAD {
 				
 				
 				float temperatureInt = Float.parseFloat(data[1]);
-				float humidityInt = Float.parseFloat(data[2]);
+				float temperatureExt = Float.parseFloat(data[2]);
+				float humidityInt = Float.parseFloat(data[3]);
+				int alert = Integer.parseInt(data[4]);
 	
 				this.model.setTemperatureInt(temperatureInt);
+				this.model.setTemperatureExt(temperatureExt);
 				this.model.setHumidityInt(humidityInt);
 			}else {
 				System.out.println(inputLine);

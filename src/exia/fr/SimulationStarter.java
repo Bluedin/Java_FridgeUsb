@@ -2,21 +2,22 @@ package exia.fr;
 
 public class SimulationStarter implements ICAD {
 
-	private Thread simulation;
+	private Thread simulationThread;
+	private Simulation simulation;
 	
 	public SimulationStarter(Model model) {
-		this.simulation = new Thread(new Simulation(model));
+		this.simulation = new Simulation(model);
+		this.simulationThread = new Thread(this.simulation);
 	}
 	
 	@Override
 	public void start() {
-		this.simulation.start();
+		this.simulationThread.start();
 	}
 
 	@Override
 	public void setConsigne(double value) {
-		// TODO Auto-generated method stub
-		
+		this.simulation.setConsigne(value);
 	}
 
 }

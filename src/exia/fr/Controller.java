@@ -9,9 +9,10 @@ public class Controller implements IController, ModelObserver {
 	public Controller() {
 		this.model = new Model();
 		model.addObserver(this);
+		this.view = new View(this, 18);
 		this.cad = new CAD(this.model);
 
-		this.view = new View(this, 18);
+		
 		this.view.setVisible(true);
 	}
 
@@ -24,6 +25,11 @@ public class Controller implements IController, ModelObserver {
 	public void onHumidityChanged(float value) {
 		this.view.setFieldHumidity(value);
 	}
+	
+	@Override
+	public void onTemperatureExtChanged(float value) {
+		this.view.setFieldTemperatureExt(value);
+	}
 
 	@Override
 	public void onTemperatureConsigneChanged(float value) {
@@ -31,7 +37,7 @@ public class Controller implements IController, ModelObserver {
 	}
 
 	@Override
-	public void onAlertChange(int value) {
+	public void onAlertChanged(int value) {
 		this.view.setAlertImage(value);
 	}
 

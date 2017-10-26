@@ -16,21 +16,22 @@ public class Model {
 	 * Température intérieure du réfrigérateur. En degrés celcius.
 	 */
 	private float temperatureInt = 0;
+	
+	private float temperatureExt = 0;
 
 	/**
 	 * Humidité intérieure du réfrigérateur. En pourcentage d'humidité relative dans
 	 * l'air.
 	 */
 	private float humidityInt = 0;
-
 	/**
 	 * Température de consigne pour l'asservissement du réfrigérateur. En degrés
 	 * celcius.
 	 */
 	private float temperatureConsigne = 18;
 	
+	private int alert = 0;
 	
-
 	
 
 	public float getTemperatureInt() {
@@ -41,6 +42,17 @@ public class Model {
 		if (this.temperatureInt != temperatureInt){
 			this.temperatureInt = temperatureInt;
 			notifyTemperatureIntChanged();
+		}
+	}
+	
+	public float getTemperatureExt() {
+		return temperatureExt;
+	}
+	
+	public void setTemperatureExt(float temperatureExt) {
+		if(this.temperatureExt != temperatureExt) {
+			this.temperatureExt = temperatureExt;
+			notifyTemperatureExtChanged();
 		}
 	}
 
@@ -65,6 +77,17 @@ public class Model {
 			notifyTemperatureConsigneChanged();
 		}
 	}
+	
+	public int getAlert() {
+		return alert;
+	}
+	
+	public void setAlert(int alert) {
+		if(this.alert != alert) {
+			this.alert = alert;
+			notifyAlertChanged();
+		}
+	}
 
 	public void addTemperatureConsigne() {
 		this.setTemperatureConsigne((float) (this.getTemperatureConsigne() + 0.5));
@@ -87,6 +110,12 @@ public class Model {
 			observer.onTemperatureIntChanged(this.temperatureInt);
 		}
 	}
+	
+	private void notifyTemperatureExtChanged() {
+		for(ModelObserver observer : list) {
+			observer.onTemperatureExtChanged(this.temperatureExt);
+		}
+	}
 
 	private void notifyHumidityIntChanged() {
 		for (ModelObserver observer : list) {
@@ -97,6 +126,12 @@ public class Model {
 	private void notifyTemperatureConsigneChanged() {
 		for (ModelObserver observer : list) {
 			observer.onTemperatureConsigneChanged(this.temperatureConsigne);
+		}
+	}
+	
+	private void notifyAlertChanged() {
+		for (ModelObserver observer : list) {
+			observer.onAlertChanged(this.alert);
 		}
 	}
 

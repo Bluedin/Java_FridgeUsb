@@ -19,18 +19,23 @@ public class View extends JFrame {
 
 	private static final long serialVersionUID = -3963025861937096826L;
 	public final JPanel contentPane;
-	public final JLabel fieldTemperature;
+	public final JLabel fieldTemperatureInt;
+	public final JLabel fieldTemperatureExt;
 	public final JLabel fieldHumidity;
 	public final JLabel labelConsigne;
 	public JButton buttonConsignePlus;
 	public JButton buttonConsigneMinus;
 	private final Action action = new actionButtonPlus();
 	private final Action action_1 = new actionButtonMinus();
+	public JButton TemperatureGraph;
+	public JButton HumidityGraph;
+	private final Action action_2 = new actionGraphTemperature();
+	private final Action action_3 = new actionGraphHumidity();
 	private final IController controller;
-	private ImagePanel AlertPanel;
 	private GraphThreadController graphThread;
 	private GraphTemperature graphTemperature;
 	private GraphHumidity graphHumidity;
+	private ImagePanel alertPanel;
 	// private DrawGraph graph;
 	// private List<BufferedImage> image = newArrayList<BufferedImage>();
 
@@ -48,23 +53,30 @@ public class View extends JFrame {
 
 		setTitle("Frigo GUI");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 613, 289);
+		setBounds(100, 100, 746, 374);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 
-		JLabel lblNewLabel = new JLabel("Temp\u00E9rature : ");
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		JLabel lblTemperatureInt = new JLabel("Interior Temperature : ");
+		lblTemperatureInt.setFont(new Font("Tahoma", Font.PLAIN, 18));
 
-		JLabel lblHumidit = new JLabel("Humidit\u00E9 : ");
+		JLabel lblHumidit = new JLabel("Humidity : ");
 		lblHumidit.setFont(new Font("Tahoma", Font.PLAIN, 18));
 
 		JLabel lblConsigne = new JLabel("Consigne : ");
 		lblConsigne.setFont(new Font("Tahoma", Font.PLAIN, 18));
 
-		fieldTemperature = new JLabel("0\u00B0C");
-		fieldTemperature.setForeground(Color.RED);
-		fieldTemperature.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		JLabel lblTemperatureExt = new JLabel("Exterior Temperature :");
+		lblTemperatureExt.setFont(new Font("Tahoma", Font.PLAIN, 18));
+
+		fieldTemperatureInt = new JLabel("0\u00B0C");
+		fieldTemperatureInt.setForeground(Color.RED);
+		fieldTemperatureInt.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		
+		fieldTemperatureExt = new JLabel("0\u00B0C");
+		fieldTemperatureExt.setForeground(Color.PINK);
+		fieldTemperatureExt.setFont(new Font("Tahoma", Font.PLAIN, 18));
 
 		fieldHumidity = new JLabel("0%");
 		fieldHumidity.setForeground(Color.BLUE);
@@ -81,69 +93,99 @@ public class View extends JFrame {
 		buttonConsigneMinus = new JButton("-");
 		buttonConsigneMinus.setAction(action_1);
 		buttonConsigneMinus.setFont(new Font("Tahoma", Font.PLAIN, 18));
-
-		// this.AlertPanel = newJPanel();
-		this.AlertPanel = new ImagePanel();
-		this.AlertPanel.paintComponents(AlertPanel.getGraphics());
+		//AlertPanel = new ImagePanel();
+		//AlertPanel.paintComponents(AlertPanel.getGraphics());
 
 		this.graphTemperature = new GraphTemperature("Temperature Graph");
-		this.graphTemperature.setVisible(true);
+		//this.graphTemperature.setVisible(true);
 		
 		this.graphHumidity = new GraphHumidity("Humidity Graph");
-		this.graphHumidity.setVisible(true);
+		//this.graphHumidity.setVisible(true);
 		
 		this.graphThread = new GraphThreadController(this.graphTemperature, this.graphHumidity);
 		Thread thread = new Thread(this.graphThread);
 		thread.start();
+		
+		alertPanel = new ImagePanel();
+		alertPanel.repaint();
+		
+		TemperatureGraph = new JButton("Temperature Graph");
+		TemperatureGraph.setAction(action_2);
+		
+		HumidityGraph = new JButton("Humidity Graph");
+		HumidityGraph.setAction(action_3);
+		
 
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane
-				.createSequentialGroup().addContainerGap()
-				.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+		gl_contentPane.setHorizontalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPane.createSequentialGroup()
-								.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 164, GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(ComponentPlacement.RELATED).addComponent(fieldTemperature,
-										GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-						.addGroup(gl_contentPane.createSequentialGroup()
+							.addContainerGap()
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
 								.addComponent(lblHumidit, GroupLayout.PREFERRED_SIZE, 164, GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(ComponentPlacement.RELATED).addComponent(fieldHumidity,
-										GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-						.addGroup(gl_contentPane.createSequentialGroup()
+								.addComponent(lblTemperatureExt, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 								.addComponent(lblConsigne, GroupLayout.PREFERRED_SIZE, 164, GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-										.addGroup(gl_contentPane.createSequentialGroup()
-												.addComponent(buttonConsignePlus, GroupLayout.PREFERRED_SIZE, 53,
-														GroupLayout.PREFERRED_SIZE)
-												.addPreferredGap(ComponentPlacement.RELATED)
-												.addComponent(buttonConsigneMinus, GroupLayout.PREFERRED_SIZE, 53,
-														GroupLayout.PREFERRED_SIZE))
-										.addComponent(labelConsigne, GroupLayout.PREFERRED_SIZE, 108,
-												GroupLayout.PREFERRED_SIZE))))
-				.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
-		gl_contentPane.setVerticalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane
-				.createSequentialGroup().addContainerGap()
-				.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
-						.addComponent(fieldTemperature, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
-				.addPreferredGap(ComponentPlacement.RELATED)
-				.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblHumidit, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
-						.addComponent(fieldHumidity, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
-				.addGap(44)
-				.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblConsigne, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
-						.addComponent(labelConsigne, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
-				.addPreferredGap(ComponentPlacement.RELATED)
-				.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addComponent(buttonConsignePlus, GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
-						.addComponent(buttonConsigneMinus, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE))
-				.addContainerGap()));
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addComponent(lblTemperatureInt)
+									.addPreferredGap(ComponentPlacement.RELATED)))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addComponent(buttonConsignePlus, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(buttonConsigneMinus, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE))
+								.addComponent(labelConsigne, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE)
+								.addComponent(fieldHumidity, GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
+								.addComponent(fieldTemperatureInt, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
+								.addComponent(fieldTemperatureExt))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(alertPanel, GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(24)
+							.addComponent(TemperatureGraph, GroupLayout.PREFERRED_SIZE, 185, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(HumidityGraph, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap())
+		);
+		gl_contentPane.setVerticalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(alertPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblTemperatureInt, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+								.addComponent(fieldTemperatureInt, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
+							.addGap(14)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblTemperatureExt)
+								.addComponent(fieldTemperatureExt))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblHumidit, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+								.addComponent(fieldHumidity, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblConsigne, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+								.addComponent(labelConsigne, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(buttonConsignePlus, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(buttonConsigneMinus, GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE))))
+					.addPreferredGap(ComponentPlacement.UNRELATED, 17, Short.MAX_VALUE)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
+						.addComponent(HumidityGraph, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(TemperatureGraph, GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE))
+					.addContainerGap())
+		);
 		contentPane.setLayout(gl_contentPane);
 	}
 
 	public JLabel getFieldTemperature() {
-		return fieldTemperature;
+		return fieldTemperatureInt;
 	}
 
 	public JLabel getFieldHumidity() {
@@ -155,13 +197,13 @@ public class View extends JFrame {
 	}
 
 	public void setFieldTemperature(float temperature) {
-		this.fieldTemperature.setText(Float.toString(temperature) + "\u00B0C");
+		this.fieldTemperatureInt.setText(Float.toString(temperature) + "\u00B0C");
 		this.graphThread.setInTemp(temperature);
 		this.repaint();
 	}
 	
 	public void setFieldTemperatureExt(float temperature) {
-		//this.fieldTemperatureExt.setText(Float.toString(temperature) + "\u00B0C");
+		this.fieldTemperatureExt.setText(Float.toString(temperature) + "\u00B0C");
 		this.graphThread.setExtTemp(temperature);
 		this.repaint();
 	}
@@ -179,7 +221,7 @@ public class View extends JFrame {
 	}
 
 	public void setAlertImage(int alert) {
-		this.AlertPanel.setAlert(alert);
+		this.alertPanel.setAlert(alert);
 	}
 
 	private class actionButtonPlus extends AbstractAction {
@@ -201,6 +243,27 @@ public class View extends JFrame {
 
 		public void actionPerformed(ActionEvent e) {
 			controller.onConsigneMinus();
+		}
+	}
+	
+	private class actionGraphTemperature extends AbstractAction{
+		public actionGraphTemperature() {
+			putValue(NAME, "Show Temperature Graph");
+			putValue(SHORT_DESCRIPTION, "Some short description");
+		}
+		
+		public void actionPerformed(ActionEvent e) {
+			graphTemperature.setVisible(true);
+		}
+	}
+	private class actionGraphHumidity extends AbstractAction{
+		public actionGraphHumidity() {
+			putValue(NAME, "Show Humidity Graph");
+			putValue(SHORT_DESCRIPTION, "Some short description");
+		}
+		
+		public void actionPerformed(ActionEvent e) {
+			graphHumidity.setVisible(true);
 		}
 	}
 }
