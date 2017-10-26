@@ -98,9 +98,11 @@ public class View extends JFrame {
 		// AlertPanel.paintComponents(AlertPanel.getGraphics());
 
 		this.graphTemperature = new GraphTemperature("Temperature Graph");
+		graphTemperature.setLocation(this.getLocation().x+this.getWidth(), this.getLocation().y);
 		// this.graphTemperature.setVisible(true);
 
 		this.graphHumidity = new GraphHumidity("Humidity Graph");
+		graphHumidity.setLocation(this.getLocation().x+this.getWidth(), this.getLocation().y+graphTemperature.getHeight());
 		// this.graphHumidity.setVisible(true);
 
 		this.graphThread = new GraphThreadController(this.graphTemperature, this.graphHumidity);
@@ -256,7 +258,11 @@ public class View extends JFrame {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			graphTemperature.setVisible(true);
+			if(graphTemperature.isVisible()) {
+				graphTemperature.setVisible(false);
+			}else {
+				graphTemperature.setVisible(true);
+			}
 		}
 	}
 
@@ -267,7 +273,11 @@ public class View extends JFrame {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			graphHumidity.setVisible(true);
+			if(graphHumidity.isVisible()) {
+				graphHumidity.setVisible(false);
+			}else {
+				graphHumidity.setVisible(true);
+			}
 		}
 	}
 }

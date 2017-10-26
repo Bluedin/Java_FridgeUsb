@@ -63,7 +63,7 @@ public class Simulation implements Runnable{
 				/ (17.27  - (17.27 * this.inTemperature / (237.7 + this.inTemperature) + Math.log(this.humidity/100)));
 		double diffCondens = this.inTemperature - ptRosee;
 		
-		System.out.println("PtRosee : " + ptRosee + " - Difference : " + diffCondens);
+		//System.out.println("PtRosee : " + ptRosee + " - Difference : " + diffCondens);
 		if(diffCondens > 5) {
 			this.alert = 0;
 		}else if (diffCondens > 3){
@@ -79,7 +79,7 @@ public class Simulation implements Runnable{
 	public void run() {
 		while(true) {
 			try {
-				Thread.sleep(100);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
