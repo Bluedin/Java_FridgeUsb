@@ -1,6 +1,16 @@
 package exia.fr;
 
-public class Controller implements IController, ModelObserver {
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+
+import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
+
+public class Controller implements ModelObserver, ActionListener{
 
 	private View view;
 	private Model model;
@@ -9,46 +19,86 @@ public class Controller implements IController, ModelObserver {
 	public Controller() {
 		this.model = new Model();
 		model.addObserver(this);
-		this.view = new View(this, 18);
+		JFrame.setDefaultLookAndFeelDecorated(true);
+		Controller controller = this;
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					UIManager.setLookAndFeel(new SubstanceGraphiteLookAndFeel());
+				} catch (Exception e) {
+					System.out.println(e);
+					System.out.println("Substance Graphite failed to initialize");
+				}
+				view = new View(18);
+				view.setVisible(true);
+				view.buttonConsignePlus.addActionListener(controller);
+				view.buttonConsigneMinus.addActionListener(controller);
+			}
+		});
+		
 		this.cad = new CAD(this.model);
 
 		
-		this.view.setVisible(true);
 	}
 
 	@Override
 	public void onTemperatureIntChanged(float value) {
-		this.view.setFieldTemperature(value);
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				view.setFieldTemperature(value);
+			}
+		});
 	}
 
 	@Override
 	public void onHumidityChanged(float value) {
-		this.view.setFieldHumidity(value);
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				view.setFieldHumidity(value);
+			}
+		});
 	}
 	
 	@Override
 	public void onTemperatureExtChanged(float value) {
-		this.view.setFieldTemperatureExt(value);
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				view.setFieldTemperatureExt(value);
+			}
+		});
 	}
 
 	@Override
 	public void onTemperatureConsigneChanged(float value) {
-		this.view.setLabelConsigne(value);
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				view.setLabelConsigne(value);
+			}
+		});
 	}
 
 	@Override
 	public void onAlertChanged(int value) {
-		this.view.setAlertImage(value);
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				view.setAlertImage(value);
+			}
+		});
 	}
-
+	
 	@Override
-	public void onConsignePlus() {
-		this.model.addTemperatureConsigne();
-	}
+	public void actionPerformed(ActionEvent event) {
+		JButton btn = (JButton)event.getSource();
+		String label = btn.getText();
+		switch (label) {
+		case "+":
+			this.model.addTemperatureConsigne();
+			break;
 
-	@Override
-	public void onConsigneMinus() {
-		this.model.decreaseTemperatureConsigne();
+		case "-":
+			this.model.decreaseTemperatureConsigne();
+			break;
+		}	
 	}
 
 }
