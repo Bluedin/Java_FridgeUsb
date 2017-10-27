@@ -89,19 +89,19 @@ public class TemperatureEvolution implements ModelObserver, Runnable{
 			iterationExtSame = 0;
 			iterationConsigneGap = 0;
 			for(float tempVar : variationTempIntFilt) {
-				if(Math.abs(tempVar) < 0.5) {
+				if(Math.abs(tempVar) < 0.2) {
 					iterationStagn ++;
 				}
 				if(tempVar > 0) {
 					iterationPos ++;
 				}
 			}
-			if (iterationStagn >= 16 && (iterationPos <= 2 || iterationPos >= 8)) {
+			if (iterationStagn >= 16 && (iterationPos <= 2 || iterationPos >= 18)) {
 				noVariation = true;
 			}
-			if(temperatureInt.get(temperatureInt.size()-1) - temperatureConsigne.get(temperatureConsigne.size()-1) > 0 && iterationPos >= 5) {
+			if(temperatureInt.get(temperatureInt.size()-1) - temperatureConsigne.get(temperatureConsigne.size()-1) > 0 && iterationPos <= 5) {
 				wrongVariation = true;
-			} else if(temperatureInt.get(temperatureInt.size()-1) - temperatureConsigne.get(temperatureConsigne.size()-1) < 0 && iterationPos <= 5) {
+			} else if(temperatureInt.get(temperatureInt.size()-1) - temperatureConsigne.get(temperatureConsigne.size()-1) < 0 && iterationPos >= 5) {
 				wrongVariation = true;
 			}
 			
@@ -125,11 +125,12 @@ public class TemperatureEvolution implements ModelObserver, Runnable{
 				consigneGap = true;
 			}
 			
+			
 			if(consigneGap && wrongVariation && !noVariation) {
 				this.model.setAlertTemp(1);
 			} else if(consigneGap && nearTempExt && (wrongVariation || noVariation)) {
 				this.model.setAlertTemp(2);
-			} else if(consigneGap && !nearTempExt) {
+			} else if(consigneGap && !nearTempExt && (wrongVariation || noVariation)) {
 				this.model.setAlertTemp(3);
 			} else {
 				this.model.setAlertTemp(0);
