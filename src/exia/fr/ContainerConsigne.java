@@ -37,4 +37,9 @@ public class ContainerConsigne implements ModelObserver{
 		
 	}
 
+	@Override
+	public void onAlertTempChanged(int value) {
+		
+	}
+
 }

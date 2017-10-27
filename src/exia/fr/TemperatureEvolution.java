@@ -8,12 +8,17 @@ public class TemperatureEvolution implements ModelObserver, Runnable{
 	private List<Float> temperatureInt = new ArrayList<Float>();
 	private List<Float> temperatureExt = new ArrayList<Float>();
 	private List<Float> temperatureConsigne = new ArrayList<Float>();
+	private Model model;
 	
 	public TemperatureEvolution(Model model) {
 		model.addObserver(this);
-		this.temperatureInt.add(model.getTemperatureInt());
-		this.temperatureExt.add(model.getTemperatureExt());
-		this.temperatureConsigne.add(model.getTemperatureConsigne());
+		this.model = model;
+		for(int i = 0; i<20; i++) {
+			this.temperatureInt.add(model.getTemperatureInt());
+			this.temperatureExt.add(model.getTemperatureExt());
+			this.temperatureConsigne.add(model.getTemperatureConsigne());
+		}
+		
 	}
 
 	@Override
@@ -94,12 +99,14 @@ public class TemperatureEvolution implements ModelObserver, Runnable{
 			if (iterationStagn >= 16 && (iterationPos <= 2 || iterationPos >= 8)) {
 				noVariation = true;
 			}
-			if(temperatureInt.get(temperatureInt.size()) - temperatureConsigne.get(temperatureConsigne.size()) > 0 && iterationPos >= 5) {
+			if(temperatureInt.get(temperatureInt.size()-1) - temperatureConsigne.get(temperatureConsigne.size()-1) > 0 && iterationPos >= 5) {
+				wrongVariation = true;
+			} else if(temperatureInt.get(temperatureInt.size()-1) - temperatureConsigne.get(temperatureConsigne.size()-1) < 0 && iterationPos <= 5) {
 				wrongVariation = true;
 			}
 			
 			for(int i = 5; i>0; i--) {
-				if(Math.abs(temperatureInt.get(temperatureInt.size()-i) - temperatureExt.get(temperatureExt.size()-i)) < 0.5) {
+				if(Math.abs(temperatureInt.get(temperatureInt.size()-i-1) - temperatureExt.get(temperatureExt.size()-i-1)) < 0.5) {
 					iterationExtSame ++;
 				}
 			}
@@ -109,13 +116,23 @@ public class TemperatureEvolution implements ModelObserver, Runnable{
 			}
 			
 			for(int i = 5; i>0; i--) {
-				if(Math.abs(temperatureInt.get(temperatureInt.size()-i) - temperatureConsigne.get(temperatureConsigne.size()-i)) > 0.5) {
+				if(Math.abs(temperatureInt.get(temperatureInt.size()-i-1) - temperatureConsigne.get(temperatureConsigne.size()-i-1)) > 0.5) {
 					iterationConsigneGap ++;
 				}
 			}
 			
 			if(iterationConsigneGap == 5) {
 				consigneGap = true;
+			}
+			
+			if(consigneGap && wrongVariation && !noVariation) {
+				this.model.setAlertTemp(1);
+			} else if(consigneGap && nearTempExt && (wrongVariation || noVariation)) {
+				this.model.setAlertTemp(2);
+			} else if(consigneGap && !nearTempExt) {
+				this.model.setAlertTemp(3);
+			} else {
+				this.model.setAlertTemp(0);
 			}
 			
 		}
@@ -143,6 +160,11 @@ public class TemperatureEvolution implements ModelObserver, Runnable{
 
 	@Override
 	public void onAlertChanged(int value) {
+		
+	}
+
+	@Override
+	public void onAlertTempChanged(int value) {
 		
 	}
 	

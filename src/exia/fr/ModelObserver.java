@@ -11,4 +11,6 @@ public interface ModelObserver {
 
 	void onAlertChanged(int value);
 	
+	void onAlertTempChanged(int value);
+	
 }

@@ -15,9 +15,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
+import javax.swing.SwingConstants;
 
 public class View extends JFrame {
 
@@ -27,6 +29,7 @@ public class View extends JFrame {
 	public final JLabel fieldTemperatureExt;
 	public final JLabel fieldHumidity;
 	public final JLabel labelConsigne;
+	public final JLabel lblAlertTemp;
 	public JButton buttonConsignePlus;
 	public JButton buttonConsigneMinus;
 	private final Action action = new actionButtonPlus();
@@ -52,7 +55,7 @@ public class View extends JFrame {
 
 		
 		setTitle("Frigo GUI");
-		setLayout(new FlowLayout());
+		getContentPane().setLayout(new FlowLayout());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 746, 374);
 		contentPane = new JPanel();
@@ -86,6 +89,13 @@ public class View extends JFrame {
 		labelConsigne = new JLabel(Double.toString(tempConsigne) + "\u00B0C");
 		labelConsigne.setForeground(Color.ORANGE);
 		labelConsigne.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		
+		lblAlertTemp = new JLabel("Stable");
+		lblAlertTemp.setHorizontalAlignment(SwingConstants.CENTER);;
+		lblAlertTemp.setForeground(Color.RED);
+		lblAlertTemp.setHorizontalTextPosition(SwingConstants.CENTER);
+		lblAlertTemp.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		
 
 		buttonConsignePlus = new JButton("+");
 		buttonConsignePlus.setAction(action);
@@ -119,75 +129,72 @@ public class View extends JFrame {
 		HumidityGraph.setAction(action_3);
 
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane
-				.createSequentialGroup()
-				.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane
-						.createSequentialGroup().addContainerGap()
-						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+		gl_contentPane.setHorizontalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addContainerGap()
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
 								.addComponent(lblHumidit, GroupLayout.PREFERRED_SIZE, 164, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblTemperatureExt, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
-										Short.MAX_VALUE)
+								.addComponent(lblTemperatureExt, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 								.addComponent(lblConsigne, GroupLayout.PREFERRED_SIZE, 164, GroupLayout.PREFERRED_SIZE)
-								.addGroup(gl_contentPane.createSequentialGroup().addComponent(lblTemperatureInt)
-										.addPreferredGap(ComponentPlacement.RELATED)))
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblTemperatureInt))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_contentPane.createSequentialGroup()
-										.addComponent(buttonConsignePlus, GroupLayout.PREFERRED_SIZE, 53,
-												GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(ComponentPlacement.RELATED).addComponent(buttonConsigneMinus,
-												GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE))
-								.addComponent(labelConsigne, GroupLayout.PREFERRED_SIZE, 108,
-										GroupLayout.PREFERRED_SIZE)
-								.addComponent(fieldHumidity, GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
-								.addComponent(fieldTemperatureInt, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 116,
-										Short.MAX_VALUE)
+									.addComponent(buttonConsignePlus, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(buttonConsigneMinus, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE))
+								.addComponent(labelConsigne, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE)
+								.addComponent(fieldHumidity, GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
+								.addComponent(fieldTemperatureInt, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
 								.addComponent(fieldTemperatureExt))
-						.addPreferredGap(ComponentPlacement.UNRELATED)
-						.addComponent(alertPanel, GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE))
-						.addGroup(gl_contentPane.createSequentialGroup().addGap(24)
-								.addComponent(TemperatureGraph, GroupLayout.PREFERRED_SIZE, 185,
-										GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(ComponentPlacement.RELATED).addComponent(HumidityGraph,
-										GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE)))
-				.addContainerGap()));
-		gl_contentPane.setVerticalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane
-				.createSequentialGroup().addContainerGap()
-				.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(alertPanel, GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(24)
+							.addComponent(TemperatureGraph, GroupLayout.PREFERRED_SIZE, 185, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(HumidityGraph, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE)
+							.addGap(18)
+							.addComponent(lblAlertTemp, GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)))
+					.addContainerGap())
+		);
+		gl_contentPane.setVerticalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
 						.addComponent(alertPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addGroup(gl_contentPane.createSequentialGroup()
-								.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-										.addComponent(lblTemperatureInt, GroupLayout.PREFERRED_SIZE, 40,
-												GroupLayout.PREFERRED_SIZE)
-										.addComponent(fieldTemperatureInt, GroupLayout.PREFERRED_SIZE, 40,
-												GroupLayout.PREFERRED_SIZE))
-								.addGap(14)
-								.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-										.addComponent(lblTemperatureExt).addComponent(fieldTemperatureExt))
-								.addPreferredGap(ComponentPlacement.UNRELATED)
-								.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-										.addComponent(lblHumidit, GroupLayout.PREFERRED_SIZE, 40,
-												GroupLayout.PREFERRED_SIZE)
-										.addComponent(fieldHumidity, GroupLayout.PREFERRED_SIZE, 40,
-												GroupLayout.PREFERRED_SIZE))
-								.addPreferredGap(ComponentPlacement.UNRELATED)
-								.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-										.addComponent(lblConsigne, GroupLayout.PREFERRED_SIZE, 40,
-												GroupLayout.PREFERRED_SIZE)
-										.addComponent(labelConsigne, GroupLayout.PREFERRED_SIZE, 40,
-												GroupLayout.PREFERRED_SIZE))
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
-										.addComponent(buttonConsignePlus, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addComponent(buttonConsigneMinus, GroupLayout.DEFAULT_SIZE, 43,
-												Short.MAX_VALUE))))
-				.addPreferredGap(ComponentPlacement.UNRELATED, 17, Short.MAX_VALUE)
-				.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(HumidityGraph, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
-								Short.MAX_VALUE)
-						.addComponent(TemperatureGraph, GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE))
-				.addContainerGap()));
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblTemperatureInt, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+								.addComponent(fieldTemperatureInt, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
+							.addGap(14)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblTemperatureExt)
+								.addComponent(fieldTemperatureExt))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblHumidit, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+								.addComponent(fieldHumidity, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblConsigne, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+								.addComponent(labelConsigne, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(buttonConsignePlus, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(buttonConsigneMinus, GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE))))
+					.addPreferredGap(ComponentPlacement.UNRELATED, 17, Short.MAX_VALUE)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblAlertTemp, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addGroup(Alignment.TRAILING, gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+							.addComponent(HumidityGraph, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(TemperatureGraph, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE)))
+					.addContainerGap())
+		);
 		contentPane.setLayout(gl_contentPane);
 	}
 
@@ -229,6 +236,10 @@ public class View extends JFrame {
 
 	public void setAlertImage(int alert) {
 		this.alertPanel.setAlert(alert);
+	}
+
+	public void setAlertTempText(String alert) {
+		this.lblAlertTemp.setText(alert);
 	}
 
 	private class actionButtonPlus extends AbstractAction {

@@ -30,7 +30,9 @@ public class Model {
 	 */
 	private float temperatureConsigne = 18;
 	
-	private int alert = 0;
+	private int alertCondensation = 0;
+	
+	private int alertTemp = 0;
 	
 	
 
@@ -79,16 +81,26 @@ public class Model {
 	}
 	
 	public int getAlert() {
-		return alert;
+		return alertCondensation;
 	}
 	
 	public void setAlert(int alert) {
-		if(this.alert != alert) {
-			this.alert = alert;
+		if(this.alertCondensation != alert) {
+			this.alertCondensation = alert;
 			notifyAlertChanged();
 		}
 	}
 
+	public int getAlertTemp() {
+		return alertTemp;
+	}
+	
+	public void setAlertTemp(int alert) {
+		if(this.alertTemp != alert) {
+			this.alertTemp = alert;
+			notifyAlertTempChanged();
+		}
+	}
 	public void addTemperatureConsigne() {
 		this.setTemperatureConsigne((float) (this.getTemperatureConsigne() + 0.5));
 	}
@@ -131,7 +143,13 @@ public class Model {
 	
 	private void notifyAlertChanged() {
 		for (ModelObserver observer : list) {
-			observer.onAlertChanged(this.alert);
+			observer.onAlertChanged(this.alertCondensation);
+		}
+	}
+	
+	private void notifyAlertTempChanged() {
+		for (ModelObserver observer : list) {
+			observer.onAlertTempChanged(this.alertTemp);
 		}
 	}
 
