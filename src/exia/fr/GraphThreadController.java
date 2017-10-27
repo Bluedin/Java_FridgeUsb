@@ -1,5 +1,11 @@
 package exia.fr;
 
+/**
+ * GraphThreadController class
+ * To be instantiated as Thread
+ * Update the graphs
+ *
+ */
 public class GraphThreadController implements Runnable{
 
 	private float inTemp = 0;
@@ -9,11 +15,26 @@ public class GraphThreadController implements Runnable{
 	private GraphTemperature graphTemp;
 	private GraphHumidity graphHumid;
 	
+	/**
+	 * Constuctor
+	 * 
+	 * @param graphTemp
+	 * @param graphHumid
+	 */
 	public GraphThreadController(GraphTemperature graphTemp, GraphHumidity graphHumid) {
 		this.graphTemp = graphTemp;
 		this.graphHumid = graphHumid;
 	}
 	
+	/* 
+	 * @see java.lang.Runnable#run()
+	 * update the graphs every second with 
+	 * the data in the object GraphThreadController
+	 * attribute
+	 * The attribute are updated when there is a change in the model
+	 * otherwise the data sent is the same
+	 * Assure a continuous update of the chart
+	 */
 	@Override
 	public void run() {
 		while(true) {
@@ -27,18 +48,30 @@ public class GraphThreadController implements Runnable{
 		}
 	}
 
+	/**
+	 * @param inTemp
+	 */
 	public void setInTemp(float inTemp) {
 		this.inTemp = inTemp;
 	}
 
+	/**
+	 * @param extTemp
+	 */
 	public void setExtTemp(float extTemp) {
 		this.extTemp = extTemp;
 	}
 
+	/**
+	 * @param consigne
+	 */
 	public void setConsigne(float consigne) {
 		this.consigne = consigne;
 	}
 
+	/**
+	 * @param humidity
+	 */
 	public void setHumidity(float humidity) {
 		this.humidity = humidity;
 	}

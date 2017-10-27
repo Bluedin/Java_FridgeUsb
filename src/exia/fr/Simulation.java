@@ -1,5 +1,10 @@
 package exia.fr;
 
+/**
+ * Simulation class
+ * Simulate the data to send
+ * temperatureInt, temperatureExt, humidity, alert
+ */
 public class Simulation implements Runnable{
 
 	private Model model;
@@ -10,6 +15,10 @@ public class Simulation implements Runnable{
 	private int alert;
 	private java.text.DecimalFormat df = new java.text.DecimalFormat("0.#");
 	
+	/**
+	 * @param model
+	 * set the different base data 
+	 */
 	public Simulation(Model model) {
 		this.model = model;
 		this.inTemperature = 25;
@@ -19,26 +28,45 @@ public class Simulation implements Runnable{
 		this.alert = 0;
 	}
 	
+	/**
+	 * @return the inTemperature as double
+	 */
 	public double getInTemperature() {
 		return this.inTemperature;
 	}
 	
+	/**
+	 * @return the extTemperature as double
+	 */
 	public double getExtTemperature() {
 		return this.extTemperature;
 	}
 	
+	/**
+	 * @return the humidity as double 
+	 */
 	public double getHumidity() {
 		return this.humidity;
 	}
 	
+	/**
+	 * @return the alert as int
+	 */
 	public int getAlert() {
 		return this.alert;
 	}
 	
+	/**
+	 * @param consigne
+	 * set consigne attribute
+	 */
 	public void setConsigne(double consigne) {
 		this.consigne = consigne;
 	}
 	
+	/**
+	 * simulate one row of data
+	 */
 	public void randomizer() {
 		double diffTempInOut = Math.abs(this.extTemperature - this.inTemperature);
 		if(diffTempInOut < 1) {
@@ -75,6 +103,11 @@ public class Simulation implements Runnable{
 		}
 	}
 
+	/* 
+	 * @see java.lang.Runnable#run()
+	 * do one simulation of data and 
+	 * send it to the model
+	 */
 	@Override
 	public void run() {
 		while(true) {

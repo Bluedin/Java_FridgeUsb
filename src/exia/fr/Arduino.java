@@ -10,6 +10,10 @@ import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
 
+/**
+ * Arduino class 
+ * Communicate with the arduino
+ */
 public class Arduino implements SerialPortEventListener, ICAD {
 
 	
@@ -18,10 +22,13 @@ public class Arduino implements SerialPortEventListener, ICAD {
 	private SerialPort serialPort;
 	private BufferedReader input;
 	private OutputStream output;
-	
 	private Model model;
 	
 	
+	/**
+	 * @param model
+	 * set model attribute
+	 */
 	public Arduino(Model model) {
 		this.model = model;
 	}
@@ -29,6 +36,12 @@ public class Arduino implements SerialPortEventListener, ICAD {
 	
 	// Lecture
 	
+	/* 
+	 * @see gnu.io.SerialPortEventListener#serialEvent(gnu.io.SerialPortEvent)
+	 * get the data from arduino
+	 * parse the data
+	 * set the data in the model
+	 */
 	@Override
 	public void serialEvent(SerialPortEvent event) {
 		if (event.getEventType() != SerialPortEvent.DATA_AVAILABLE) {
@@ -66,6 +79,10 @@ public class Arduino implements SerialPortEventListener, ICAD {
 	
 	
 	
+	/* 
+	 * @see exia.fr.ICAD#setConsigne(double)
+	 * send the consign to the arduino 
+	 */
 	@Override
 	public void setConsigne(double value) {
 		try{
@@ -78,7 +95,12 @@ public class Arduino implements SerialPortEventListener, ICAD {
 	 
 	 
 	 
-	 @Override
+	 /* 
+	 * @see exia.fr.ICAD#start()
+	 * set the configuration of the arduino
+	 * and of the protocol
+	 */
+	@Override
 	 public void start() {    
 			
 			// Récuperer tous les ports utilisés pour la liaison à la carte Arduino

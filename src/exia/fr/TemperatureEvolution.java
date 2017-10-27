@@ -3,6 +3,7 @@ package exia.fr;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class TemperatureEvolution implements ModelObserver, Runnable{
 
 	private List<Float> temperatureInt = new ArrayList<Float>();
@@ -10,6 +11,9 @@ public class TemperatureEvolution implements ModelObserver, Runnable{
 	private List<Float> temperatureConsigne = new ArrayList<Float>();
 	private Model model;
 	
+	/**
+	 * @param model
+	 */
 	public TemperatureEvolution(Model model) {
 		model.addObserver(this);
 		this.model = model;
@@ -21,6 +25,13 @@ public class TemperatureEvolution implements ModelObserver, Runnable{
 		
 	}
 
+	/* 
+	 * @see java.lang.Runnable#run()
+	 * Thread model which analyze the variation of the interior temperature,
+	 * the difference between interior temperature, the exterior temperature
+	 * and the consigne to set flags which allow to determine the efficiency
+	 * of the modification to the temperature
+	 */
 	@Override
 	public void run() {
 		List<Float> variationTempInt = new ArrayList<Float>();
@@ -139,31 +150,49 @@ public class TemperatureEvolution implements ModelObserver, Runnable{
 		}
 	}
 
+	/* 
+	 * @see exia.fr.ModelObserver#onTemperatureIntChanged(float)
+	 */
 	@Override
 	public void onTemperatureIntChanged(float value) {
 		this.temperatureInt.add(value);
 	}
 
+	/* 
+	 * @see exia.fr.ModelObserver#onTemperatureExtChanged(float)
+	 */
 	@Override
 	public void onTemperatureExtChanged(float value) {
 		this.temperatureInt.add(value);
 	}
 
+	/* 
+	 * @see exia.fr.ModelObserver#onHumidityChanged(float)
+	 */
 	@Override
 	public void onHumidityChanged(float value) {
 		
 	}
 
+	/* 
+	 * @see exia.fr.ModelObserver#onTemperatureConsigneChanged(float)
+	 */
 	@Override
 	public void onTemperatureConsigneChanged(float value) {
 		this.temperatureInt.add(value);
 	}
 
+	/* 
+	 * @see exia.fr.ModelObserver#onAlertChanged(int)
+	 */
 	@Override
 	public void onAlertChanged(int value) {
 		
 	}
 
+	/* 
+	 * @see exia.fr.ModelObserver#onAlertTempChanged(int)
+	 */
 	@Override
 	public void onAlertTempChanged(int value) {
 		

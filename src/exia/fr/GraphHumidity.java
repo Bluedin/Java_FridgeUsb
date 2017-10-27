@@ -12,6 +12,10 @@ import org.jfree.data.time.Second;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.ui.ApplicationFrame;
 
+/**
+ * GraphHumidity
+ * Construct chart for humidity
+ */
 public class GraphHumidity extends ApplicationFrame{
 	private static final long serialVersionUID = -1L;
 	private static final String TITLE = "Humidity ( Real time )";
@@ -22,6 +26,8 @@ public class GraphHumidity extends ApplicationFrame{
 	 * Constructor
 	 *
 	 * @param title
+	 * 
+	 * create dataset
 	 */
 	public GraphHumidity(final String title) {
 		super(title);
@@ -36,6 +42,11 @@ public class GraphHumidity extends ApplicationFrame{
 
 	}
 
+	/**
+	 * @param dataset
+	 * @return JFreeChart
+	 * create Chart
+	 */
 	private JFreeChart createChart(final XYDataset dataset) {
 		final JFreeChart result = ChartFactory.createTimeSeriesChart(TITLE, "Time", "Humidity", dataset, true, true,
 				false);
@@ -52,6 +63,7 @@ public class GraphHumidity extends ApplicationFrame{
 	 *
 	 * @param serie
 	 * @param value
+	 * update with new value of humidity
 	 */
 
 	public void update(float humidity) {

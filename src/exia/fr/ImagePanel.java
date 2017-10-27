@@ -11,6 +11,10 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.JWindow;
 
+/**
+ * ImagePanel class
+ * To be used as alert in the view
+ */
 public class ImagePanel extends JPanel{
 
 	/**
@@ -20,15 +24,12 @@ public class ImagePanel extends JPanel{
 	private List<BufferedImage> image = new ArrayList<BufferedImage>();
 	private int alert = 1;
 	
+	/**
+	 * Constructor
+	 * set the different image from src/Avertissement/*
+	 */
 	public ImagePanel() {
-		//System.out.println(System.getProperty("java.class.path"));
-		//System.out.println(this.getClass().getResource("").getPath());
-		//String path = this.getClass().getResource("/Avertissement/frigorest.png").getPath();
 		try {
-			//System.out.println(path);
-			//this.image.add(ImageIO.read(new File(path + "image/1.jpg")));
-			//this.image.add(ImageIO.read(new File("../image/1.jpg")));
-			//System.out.println(this.image.add(ImageIO.read(new File("image/1.jpg"))));
 			this.image.add(ImageIO.read(new File(this.getClass().getResource("/Avertissement/frigorest.png").getPath())));
 			this.image.add(ImageIO.read(new File(this.getClass().getResource("/Avertissement/frigono.png").getPath())));
 			this.image.add(ImageIO.read(new File(this.getClass().getResource("/Avertissement/frigolow.png").getPath())));
@@ -39,12 +40,21 @@ public class ImagePanel extends JPanel{
 		}
 	}
 	
+	/* 
+	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+	 * Update the image
+	 */
 	@Override
 	protected void paintComponent(Graphics graphics) {
 		super.paintComponent(graphics);
 		graphics.drawImage(image.get(alert).getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_DEFAULT), 0, 0, this);
 	}
 	
+	/**
+	 * @param value
+	 * set the alert as int
+	 * change the image to be shown
+	 */
 	public void setAlert(int value) {
 		this.alert = value + 1;
 		this.repaint();

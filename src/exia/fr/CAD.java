@@ -6,6 +6,13 @@ public class CAD {
 	private ICAD icad;
 	private Thread cadThreadSender;
 	
+	/**
+	 * @param model
+	 * Instantiate simulation or arduino communication
+	 * Start the simulation
+	 * Instantiate consign sender
+	 * Start the consign sender
+	 */
 	public CAD(Model model) {
 		this.model = model;
 		//this.icad = new Arduino(this.model);

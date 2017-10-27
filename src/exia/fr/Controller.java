@@ -10,6 +10,11 @@ import javax.swing.UIManager;
 
 import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
 
+/**
+ * Controller 
+ * Control interaction between the 
+ * different  component of the program
+ */
 public class Controller implements ModelObserver, ActionListener{
 
 	private View view;
@@ -17,6 +22,14 @@ public class Controller implements ModelObserver, ActionListener{
 	private CAD cad;
 	private Thread temperatureEvolution;
 
+	/**
+	 * constructor for controller
+	 * Instantiate model, view
+	 * Instantiate temperatureEvolution
+	 * which analyze data from the model to create alert
+	 * Start temperatureEvolution
+	 * Instantiate CAD
+	 */
 	public Controller() {
 		this.model = new Model();
 		model.addObserver(this);
@@ -49,6 +62,10 @@ public class Controller implements ModelObserver, ActionListener{
 		
 	}
 
+	/* 
+	 * @see exia.fr.ModelObserver#onTemperatureIntChanged(float)
+	 * set field temperature (interior) in view
+	 */
 	@Override
 	public void onTemperatureIntChanged(float value) {
 		SwingUtilities.invokeLater(new Runnable() {
@@ -58,6 +75,10 @@ public class Controller implements ModelObserver, ActionListener{
 		});
 	}
 
+	/* 
+	 * @see exia.fr.ModelObserver#onHumidityChanged(float)
+	 * set field humidity in view
+	 */
 	@Override
 	public void onHumidityChanged(float value) {
 		SwingUtilities.invokeLater(new Runnable() {
@@ -67,6 +88,10 @@ public class Controller implements ModelObserver, ActionListener{
 		});
 	}
 	
+	/* 
+	 * @see exia.fr.ModelObserver#onTemperatureExtChanged(float)
+	 * set field temperatureExt in view
+	 */
 	@Override
 	public void onTemperatureExtChanged(float value) {
 		SwingUtilities.invokeLater(new Runnable() {
@@ -76,6 +101,10 @@ public class Controller implements ModelObserver, ActionListener{
 		});
 	}
 
+	/* 
+	 * @see exia.fr.ModelObserver#onTemperatureConsigneChanged(float)
+	 * set label consign in view
+	 */
 	@Override
 	public void onTemperatureConsigneChanged(float value) {
 		SwingUtilities.invokeLater(new Runnable() {
@@ -85,6 +114,10 @@ public class Controller implements ModelObserver, ActionListener{
 		});
 	}
 
+	/* 
+	 * @see exia.fr.ModelObserver#onAlertChanged(int)
+	 * Pass value of alert to the view
+	 */
 	@Override
 	public void onAlertChanged(int value) {
 		SwingUtilities.invokeLater(new Runnable() {
@@ -94,6 +127,10 @@ public class Controller implements ModelObserver, ActionListener{
 		});
 	}
 
+	/* 
+	 * @see exia.fr.ModelObserver#onAlertTempChanged(int)
+	 * set the alert text in view
+	 */
 	@Override
 	public void onAlertTempChanged(int value) {
 		SwingUtilities.invokeLater(new Runnable() {
@@ -116,6 +153,11 @@ public class Controller implements ModelObserver, ActionListener{
 		});
 	}
 	
+	/* 
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 * get the button used in the view and add or decrease the consign
+	 * in the model in consequence
+	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		JButton btn = (JButton)event.getSource();

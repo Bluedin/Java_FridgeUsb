@@ -11,6 +11,11 @@ import org.jfree.data.time.Second;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.ui.ApplicationFrame;
 
+/**
+ * GraphTemperature
+ * Construct graph for temperatureInt,
+ * temperatureExt, consign
+ */
 public class GraphTemperature extends ApplicationFrame {
 
 	/**
@@ -25,6 +30,9 @@ public class GraphTemperature extends ApplicationFrame {
 	 * Constructor
 	 *
 	 * @param title
+	 * create dataset for Intern Temperature
+	 * create dataset for Extern Temperature
+	 * create dataset for Consign
 	 */
 	public GraphTemperature(final String title) {
 		super(title);
@@ -41,6 +49,11 @@ public class GraphTemperature extends ApplicationFrame {
 
 	}
 
+	/**
+	 * @param dataset
+	 * @return JFreeChart
+	 * create Chart
+	 */
 	private JFreeChart createChart(final XYDataset dataset) {
 		final JFreeChart result = ChartFactory.createTimeSeriesChart(TITLE, "Time", "Temperature", dataset, true, true,
 				false);
@@ -57,6 +70,8 @@ public class GraphTemperature extends ApplicationFrame {
 	 *
 	 * @param serie
 	 * @param value
+	 * Update with inTemperature, extTemperature,
+	 * consigne
 	 */
 
 	public void update(float inTemp, float exTemp, float consigne) {

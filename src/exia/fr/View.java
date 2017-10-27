@@ -13,14 +13,19 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
-import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
 import javax.swing.SwingConstants;
 
+/**
+ * View class
+ * Contains the data of the fridge,
+ * buttons to change the consign, 
+ * buttons to show the graphs,
+ * alert image for condensation changeable
+ * alert for error in operation 
+ */
 public class View extends JFrame {
 
 	private static final long serialVersionUID = -3963025861937096826L;
@@ -45,6 +50,10 @@ public class View extends JFrame {
 	// private DrawGraph graph;
 	// private List<BufferedImage> image = newArrayList<BufferedImage>();
 
+	/**
+	 * Constructor
+	 * @param tempConsigne
+	 */
 	public View(double tempConsigne) {
 
 		/*
@@ -198,50 +207,81 @@ public class View extends JFrame {
 		contentPane.setLayout(gl_contentPane);
 	}
 
+	/**
+	 * @return field Temperature
+	 */
 	public JLabel getFieldTemperature() {
 		return fieldTemperatureInt;
 	}
 
+	/**
+	 * @return Field Humidity
+	 */
 	public JLabel getFieldHumidity() {
 		return fieldHumidity;
 	}
 
+	/**
+	 * @return label consign
+	 */
 	public JLabel getLabelConsigne() {
 		return labelConsigne;
 	}
 
+	/**
+	 * @param temperature
+	 */
 	public void setFieldTemperature(float temperature) {
 		this.fieldTemperatureInt.setText(Float.toString(temperature) + "\u00B0C");
 		this.graphThread.setInTemp(temperature);
 		this.repaint();
 	}
 
+	/**
+	 * @param temperature
+	 */
 	public void setFieldTemperatureExt(float temperature) {
 		this.fieldTemperatureExt.setText(Float.toString(temperature) + "\u00B0C");
 		this.graphThread.setExtTemp(temperature);
 		this.repaint();
 	}
 
+	/**
+	 * @param humidity
+	 */
 	public void setFieldHumidity(float humidity) {
 		this.fieldHumidity.setText(Float.toString(humidity) + "%");
 		this.graphThread.setHumidity(humidity);
 		this.repaint();
 	}
 
+	/**
+	 * @param consigne
+	 */
 	public void setLabelConsigne(float consigne) {
 		this.labelConsigne.setText(Float.toString(consigne) + "\u00B0C");
 		this.graphThread.setConsigne(consigne);
 		this.repaint();
 	}
 
+	/**
+	 * @param alert
+	 */
 	public void setAlertImage(int alert) {
 		this.alertPanel.setAlert(alert);
 	}
 
+	/**
+	 * @param alert
+	 */
 	public void setAlertTempText(String alert) {
 		this.lblAlertTemp.setText(alert);
 	}
 
+	/**
+	 * Action for button plus
+	 *
+	 */
 	private class actionButtonPlus extends AbstractAction {
 		public actionButtonPlus() {
 			putValue(NAME, "+");
@@ -252,6 +292,10 @@ public class View extends JFrame {
 		}
 	}
 
+	/**
+	 * Action for button minus
+	 *
+	 */
 	private class actionButtonMinus extends AbstractAction {
 		public actionButtonMinus() {
 			putValue(NAME, "-");
