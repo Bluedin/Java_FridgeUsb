@@ -15,6 +15,7 @@ public class Controller implements ModelObserver, ActionListener{
 	private View view;
 	private Model model;
 	private CAD cad;
+	private Thread temperatureEvolution;
 
 	public Controller() {
 		this.model = new Model();
@@ -36,6 +37,13 @@ public class Controller implements ModelObserver, ActionListener{
 			}
 		});
 		
+		this.temperatureEvolution = new Thread(new TemperatureEvolution(this.model));
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		this.temperatureEvolution.start();
 		this.cad = new CAD(this.model);
 
 		
@@ -82,6 +90,28 @@ public class Controller implements ModelObserver, ActionListener{
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				view.setAlertImage(value);
+			}
+		});
+	}
+
+	@Override
+	public void onAlertTempChanged(int value) {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				switch(value) {
+				case 0 :
+					view.setAlertTempText("Stable");
+					break;
+				case 1 :
+					view.setAlertTempText("ERROR PELTIER");
+					break;
+				case 2 :
+					view.setAlertTempText("DOOR OPEN");
+					break;
+				case 3 : 
+					view.setAlertTempText("DEFFECTIVE COMPONENT");
+					break;
+				}
 			}
 		});
 	}
